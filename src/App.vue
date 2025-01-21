@@ -48,6 +48,15 @@ cartStore.$subscribe((mutation, _state) => {
         >
           Orders
         </router-link>
+
+        <!-- Admin Link (only shown when logged in) -->
+        <router-link 
+          v-if="authStore.user" 
+          to="/admin/products" 
+          class="hover:text-gray-300"
+        >
+          Admin
+        </router-link>
         
         <!-- User Info -->
         <div v-if="authStore.user" class="flex items-center space-x-2">

@@ -6,6 +6,8 @@ export type Json =
   | { [key: string]: Json | undefined }
   | Json[]
 
+export type Product = Database['public']['Tables']['products']['Row']
+
 export interface Database {
   public: {
     Tables: {
