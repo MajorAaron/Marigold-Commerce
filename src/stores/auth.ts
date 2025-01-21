@@ -3,18 +3,30 @@ import { ref } from 'vue'
 import { supabase } from '../lib/supabase'
 import type { User } from '@supabase/supabase-js'
 
-// Initialize auth state
-const { data } = await supabase.auth.getSession()
-
 export const useAuthStore = defineStore('auth', () => {
-  const user = ref<User | null>(data?.session?.user ?? null)
-  const loading = ref(false)
+  const user = ref<User | null>(null)
+  const loading = ref(true)
   const error = ref<string | null>(null)
 
+  // Initialize user state
+  const initializeAuth = async () => {
+    try {
+      const { data } = await supabase.auth.getSession()
+      user.value = data?.session?.user ?? null
+    } catch (err) {
+      error.value = (err as Error).message
+    } finally {
+      loading.value = false
+    }
+  }
+
   // Listen for auth changes
-  supabase.auth.onAuthStateChange((event, session) => {
+  supabase.auth.onAuthStateChange((_event, session) => {
     user.value = session?.user ?? null
   })
+
+  // Initialize auth state
+  initializeAuth()
 
   async function login(email: string, password: string) {
     try {
@@ -70,6 +82,7 @@ export const useAuthStore = defineStore('auth', () => {
     error,
     login,
     register,
-    logout
+    logout,
+    initializeAuth
   }
 })

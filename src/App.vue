@@ -18,13 +18,16 @@ const showAddedNotification = ref(false)
 const lastAddedItem = ref('')
 
 // Listen for cart updates
-cartStore.$subscribe((mutation, state) => {
-  if (mutation.type === MutationType.direct && mutation.events?.type === 'addItem') {
-    lastAddedItem.value = mutation.payload.product.name
-    showAddedNotification.value = true
-    setTimeout(() => {
-      showAddedNotification.value = false
-    }, 2000)
+cartStore.$subscribe((mutation, _state) => {
+  if (mutation.type === MutationType.direct) {
+    const storeEvent = mutation.events as unknown as { type: string; payload: { product: { name: string } } }
+    if (storeEvent?.type === 'addItem') {
+      lastAddedItem.value = storeEvent.payload.product.name
+      showAddedNotification.value = true
+      setTimeout(() => {
+        showAddedNotification.value = false
+      }, 2000)
+    }
   }
 })
 </script>
