@@ -41,17 +41,10 @@ async function uploadImage(file: File) {
     const fileName = `${Math.random()}.${fileExt}`
     const filePath = `${fileName}`
 
-    // Create a FormData to track upload progress
-    const formData = new FormData()
-    formData.append('file', file)
-
+    // Simple upload without progress tracking
     const { error: uploadError } = await supabase.storage
       .from('products')
-      .upload(filePath, file, {
-        onUploadProgress: (progress: { loaded: number; total: number }) => {
-          uploadProgress.value = Math.round((progress.loaded / progress.total) * 100)
-        },
-      })
+      .upload(filePath, file)
 
     if (uploadError) throw uploadError
 
