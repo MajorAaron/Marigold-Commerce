@@ -1,0 +1,5 @@
+Get a email confirmation working
+
+Install site
+
+Install moments/signals
