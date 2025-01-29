@@ -3,6 +3,7 @@ import { ref, onMounted } from 'vue'
 import { supabase } from '../lib/supabase'
 import type { Database } from '../types/supabase'
 import { useCartStore } from '../stores/cart'
+import { RouterLink } from 'vue-router'
 
 type Product = Database['public']['Tables']['products']['Row']
 
@@ -50,16 +51,18 @@ function addToCart(product: Product) {
     </div>
     
     <div v-else class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6">
-      <div v-for="product in products" :key="product.id" class="border rounded-lg p-4">
-        <img 
-          v-if="product.image_url" 
-          :src="product.image_url" 
-          :alt="product.name"
-          class="w-full max-w-[500px] h-48 object-cover rounded-lg mb-4 mx-auto"
-        >
-        <h2 class="text-xl font-semibold mb-2">{{ product.name }}</h2>
-        <p class="text-gray-600 mb-2">{{ product.description }}</p>
-        <p class="text-lg font-bold mb-4">${{ product.price.toFixed(2) }}</p>
+      <div v-for="product in products" :key="product.id" class="border rounded-lg p-4 transition-transform hover:scale-105">
+        <router-link :to="`/products/${product.id}`" class="block mb-4">
+          <img 
+            v-if="product.image_url" 
+            :src="product.image_url" 
+            :alt="product.name"
+            class="w-full max-w-[500px] h-48 object-cover rounded-lg mb-4 mx-auto"
+          >
+          <h2 class="text-xl font-semibold mb-2">{{ product.name }}</h2>
+          <p class="text-gray-600 mb-2 line-clamp-2">{{ product.description }}</p>
+          <p class="text-lg font-bold mb-4">${{ product.price.toFixed(2) }}</p>
+        </router-link>
         <button 
           @click="addToCart(product)"
           class="w-full bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 transition-colors"

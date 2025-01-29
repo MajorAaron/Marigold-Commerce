@@ -8,8 +8,8 @@ export default defineConfig({
     host: 'meetmarigoldmoments.com',
     port: 5173,
     https: {
-      key: './certs/localhost+1-key.pem',
-      cert: './certs/localhost+1.pem'
+      key: './certs/meetmarigoldmoments.com+3-key.pem',
+      cert: './certs/meetmarigoldmoments.com+3.pem'
     },
     headers: {
       'Access-Control-Allow-Origin': '*',
